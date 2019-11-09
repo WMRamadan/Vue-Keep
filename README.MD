@@ -14,8 +14,14 @@ Not taking app similar to google keep including a todo list.
 - [vuejs](https://vuejs.org/) for front-end framework
 - [mongodb](https://www.mongodb.com/) for database
 
-### Running the application
+### Running the back-end application
 
-    npm serve
+    npm run start
 
-The application should be visible at `127.0.0.1:8000` after that.
+The application should be visible at `localhost:3000` after that.
+
+### Running the front-end application
+
+    npm run start
+
+The application should be visible at `localhost:5000` after that.
