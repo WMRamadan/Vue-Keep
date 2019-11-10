@@ -1,10 +1,10 @@
-# Vue Keep - note taking and todo list app
+# Vue Keep - note taking and checklist app
 
 > This app uses NestJS for the back-end api, VueJS for the front-end and MongoDB for the database.
 
 ## Description
 
-Note taking app similar to google keep including a todo list.
+Note taking app similar to google keep including a checklist.
 
 ### Requirements
 

@@ -12,18 +12,18 @@
 </template>
 
 <script>
-import Todo from './components/Todo'
+import Checklist from './components/Checklist'
 import Notes from './components/Notes'
 
 export default {
   data: function() {
     return {
-      tabs: ["Notes", "Todo"],
+      tabs: ["Notes", "Checklist"],
       selected: "Notes"
     };
   },
   components: {
-    Todo,
+    Checklist,
     Notes,
   }
 }
