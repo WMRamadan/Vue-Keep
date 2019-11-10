@@ -1,6 +1,11 @@
 <template>
   <div>
-    <input type="textarea" class="notes-input" placeholder="Write a note." v-model="newNote" @keyup.enter="addNote">
+    <div>
+        <input type="textarea" class="notes-input" placeholder="Write a note." v-model="newNote" @keyup.enter="addNote">
+        <button class="btn" @click="addNote">
+            Save
+        </button>
+    </div>
     <div v-for="(note, index) in notes" :key="note.id" class="note-item">
         <div>
             {{ note.text }}
@@ -52,6 +57,13 @@ export default {
 
 
 <style>
+    .btn {
+        width: 100%;
+        padding: 10px 18px;
+        font-size: 18px;
+        margin-bottom: 16px;
+    }
+
     .notes-input {
         width: 100%;
         padding: 10px 18px;
