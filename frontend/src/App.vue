@@ -1,18 +1,29 @@
 <template>
   <div id="app" class="container">
     <img src="./assets/logo.png" class="logo">
-    <Notes></Notes>
+    <div>
+    <button v-for="tab in tabs" :key="tab" @click="selected = tab;" :class="['tab-btn', { active: selected === tab }]">
+      {{ tab }}
+    </button>
+
+    <component :is="selected" class="tab"></component>
+  </div>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld'
+import Todo from './components/Todo'
 import Notes from './components/Notes'
 
 export default {
-  name: 'App',
+  data: function() {
+    return {
+      tabs: ["Notes", "Todo"],
+      selected: "Notes"
+    };
+  },
   components: {
-    HelloWorld,
+    Todo,
     Notes,
   }
 }
@@ -22,6 +33,25 @@ export default {
 
 * {
   box-sizing: border-box;
+}
+
+.tab-btn {
+  padding: 6px 10px;
+  background: #ffffff;
+  cursor: pointer;
+  margin-bottom: 1rem;
+  border: 2px solid #cccccc;
+  outline: none;
+}
+
+.active {
+  border-bottom: 3px solid green;
+  background: #fcfcf;
+}
+
+.tab {
+  border: 1px solid #ccc;
+  padding: 10px;
 }
 
 .container {

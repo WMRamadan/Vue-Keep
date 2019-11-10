@@ -4,7 +4,7 @@
 
 ## Description
 
-Not taking app similar to google keep including a todo list.
+Note taking app similar to google keep including a todo list.
 
 ### Requirements
 
