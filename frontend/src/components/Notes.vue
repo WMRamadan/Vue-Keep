@@ -18,35 +18,32 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   name: 'Notes',
   data () {
     return {
-      newNote: '',
-      idForNote: 3,
-      notes: [
-          {
-              'id': 1,
-              'text': 'This is my first note',
-          },
-          {
-              'id': 2,
-              'text': 'This is my second note',
-          }
-      ]
+      notes: [],
+      newNote: ''
     }
   },
+  async created(){
+      try {
+          const res = await axios.get('http://127.0.0.1:3000/notes');
+          this.notes = res.data;
+      } catch (e) {
+          console.error(e);
+      }
+  },
   methods: {
-      addNote() {
+    async addNote() {
           if(this.newNote.trim().length == 0) {
               return
           }
-          this.notes.push({
-              id: this.idForNote,
-              text: this.newNote,
-          })
-          this.newNote = ''
-          this.idForNote++
+          const res = await axios.post('http://127.0.0.1:3000/notes', {text: this.newNote});
+          this.notes = [...this.notes, res.data];
+          this.newNote = '';
       },
       removeNote(index) {
           this.notes.splice(index, 1)
