@@ -13,6 +13,12 @@ Note taking app similar to google keep including a checklist.
 - [vuejs](https://vuejs.org/) for front-end framework
 - [mongodb](https://www.mongodb.com/) for database
 
+### Make sure MongoDB is installed and running
+
+    mongod
+
+The database should be running at `mongodb://localhost:27017` after that.
+
 ### Running the back-end application
 
     cd backend/
