@@ -7,11 +7,11 @@
         </button>
     </div>
     <div v-for="(item, index) in items" :key="item.id" class="checklist-item">
-        <input type="checkbox" v-model="item.checked">
+        <input type="checkbox" v-model="item.checked" @change="updateItem(item)">
         <div :class="{ checked : item.checked }">
             {{ item.text }}
         </div>
-        <div class="remove-item" @click="removeItem(index)">
+        <div class="remove-item" @click="removeItem(index, item)">
             &times;
         </div>
     </div>
@@ -19,41 +19,44 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
-  name: 'Checklist',
+  name: 'Items',
   data () {
     return {
+      items: [],
       newItem: '',
-      idForItem: 3,
-      items: [
-          {
-              'id': 1,
-              'text': 'This is my first item',
-              'checked': false,
-          },
-          {
-              'id': 2,
-              'text': 'This is my second item',
-              'checked': false,
-          }
-      ]
+      checked: false
     }
   },
+  async created(){
+      try {
+          const res = await axios.get('http://127.0.0.1:3000/items');
+          this.items = res.data;
+      } catch (e) {
+          console.error(e);
+      }
+  },
   methods: {
-      addItem() {
+    async addItem() {
           if(this.newItem.trim().length == 0) {
               return
           }
+          const res = await axios.post('http://127.0.0.1:3000/items', {text: this.newItem});
           this.items.push({
-              id: this.idForItem,
+              id: this.newItem,
               text: this.newItem,
-              checked: false,
           })
-          this.newItem = ''
-          this.idForItem++
+          this.newItem = '';
       },
-      removeItem(index) {
-          this.items.splice(index, 1)
+      async updateItem(item) {
+          console.log(item.checked);
+          const res = await axios.patch('http://127.0.0.1:3000/items/' + item.id, {checked: item.checked});
+      },
+      removeItem(index, item) {
+          const res = axios.delete('http://127.0.0.1:3000/items/' + item.id);
+          this.items.splice(index, 1);
       }
   }
 }

@@ -45,7 +45,6 @@ export default {
           this.notes.push({
               id: this.newNote,
               text: this.newNote,
-              checked: false,
           })
           this.newNote = '';
       },

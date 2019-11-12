@@ -15,12 +15,16 @@ Note taking app similar to google keep including a checklist.
 
 ### Running the back-end application
 
-    npm run start
+    cd backend/
+    npm install
+    npm run start:dev
 
 The application should be visible at `localhost:3000` after that.
 
 ### Running the front-end application
 
+    cd frontend/
+    npm install
     npm run dev
 
 The application should be visible at `localhost:8080` after that.
