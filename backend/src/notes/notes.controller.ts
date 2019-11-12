@@ -5,14 +5,15 @@ import { NotesService } from './notes.service';
 export class NotesController {
     constructor(private readonly notesService: NotesService) {}
     @Post()
-    addNote(@Body('text') noteText: string) {
-        const generatedId = this.notesService.insertNote(noteText);
+    async addNote(@Body('text') noteText: string) {
+        const generatedId = await this.notesService.insertNote(noteText);
         return {id: generatedId};
     }
 
     @Get()
-    getAllNotes() {
-        return this.notesService.getNotes();
+    async getAllNotes() {
+        const notes = await this.notesService.getNotes();
+        return notes;
     }
 
     @Get(':id')
@@ -21,14 +22,14 @@ export class NotesController {
     }
 
     @Patch(':id')
-    updateNote(@Param('id') noteId: string, @Body('text') noteText: string) {
-        this.notesService.updateNote(noteId, noteText);
+    async updateNote(@Param('id') noteId: string, @Body('text') noteText: string) {
+        await this.notesService.updateNote(noteId, noteText);
         return null;
     }
 
     @Delete(':id')
-    removeNote(@Param('id') noteId: string) {
-        this.notesService.deleteNote(noteId);
+    async removeNote(@Param('id') noteId: string) {
+        await this.notesService.deleteNote(noteId);
         return null;
     }
 }

@@ -1,46 +1,56 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
 import { Note } from './note.model';
 
 @Injectable()
 export class NotesService {
-    private notes: Note[] = [];
 
-    insertNote(text: string) {
-        const noteId = Math.random().toString();
-        const newNote = new Note(noteId, text);
-        this.notes.push(newNote);
-        return noteId;
+    constructor(@InjectModel('Note') private readonly noteModel: Model<Note>) {}
+
+    async insertNote(text: string) {
+        const newNote = new this.noteModel({text: text});
+        const result = await newNote.save();
+        console.log(result);
+        return result.id as string;
     }
 
-    getNotes() {
-        return [...this.notes];
+    async getNotes() {
+        const notes = await this.noteModel.find().exec();
+        console.log(notes);
+        return notes.map(note => ({id: note.id, text: note.text}));
     }
 
-    getSingleNote(noteId: string) {
-        const note = this.findNote(noteId)[0];
-        return {...note};
+    async getSingleNote(noteId: string) {
+        const note = await this.findNote(noteId);
+        return {id: note.id, text: note.text};
     }
 
-    updateNote(noteId: string, text: string){
-        const [note, index] = this.findNote(noteId);
-        const updatedNote = {...note};
+    async updateNote(noteId: string, text: string){
+        const updatedNote = await this.findNote(noteId);
         if (text) {
             updatedNote.text = text;
         }
-        this.notes[index] = updatedNote;
+        updatedNote.save();
     }
 
-    deleteNote(noteId: string) {
-        const index = this.findNote(noteId)[1];
-        this.notes.splice(index, 1);
+    async deleteNote(noteId: string) {
+        const result = await this.noteModel.deleteOne({_id: noteId}).exec();
+        if (result.n === 0) {
+            throw new NotFoundException('Could not find note.');
+        }
     }
 
-    private findNote(id: string): [Note, number] {
-        const noteIndex = this.notes.findIndex((note) => note.id === id);
-        const note = this.notes[noteIndex];
+    private async findNote(id: string): Promise<Note> {
+        let note;
+        try {
+        note = await this.noteModel.findById(id).exec();
+        } catch (error) {
+            throw new NotFoundException('Could not find note.');
+        }
         if (!note) {
             throw new NotFoundException('Could not find note.');
         }
-        return [note, noteIndex];
+        return note;
     }
 }

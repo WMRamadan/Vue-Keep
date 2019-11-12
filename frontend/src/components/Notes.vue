@@ -10,7 +10,7 @@
         <div>
             {{ note.text }}
         </div>
-        <div class="remove-item" @click="removeNote(index)">
+        <div class="remove-item" @click="removeNote(index, note)">
             &times;
         </div>
     </div>
@@ -42,11 +42,16 @@ export default {
               return
           }
           const res = await axios.post('http://127.0.0.1:3000/notes', {text: this.newNote});
-          this.notes = [...this.notes, res.data];
+          this.notes.push({
+              id: this.newNote,
+              text: this.newNote,
+              checked: false,
+          })
           this.newNote = '';
       },
-      removeNote(index) {
-          this.notes.splice(index, 1)
+      removeNote(index, note) {
+          const res = axios.delete('http://127.0.0.1:3000/notes/' + note.id);
+          this.notes.splice(index, 1);
       }
   }
 }
